@@ -22,6 +22,23 @@
  ;        "#8defd2"   ;turquoise if empty
  ;        "#ef8daa")  ;pink if clicked
 
+(defn computer-move
+  []
+  (let [available-cells
+    (for [row (range board-dimension)
+          column (range board-dimension)
+          :when (=
+            :empty
+            (get-in(@app-state :board) [column row]))]
+    [column row])
+    next-move (when (seq available-cells)
+          (rand-nth available-cells))]
+    (if next-move
+      (do
+        (prn "Computer move at:" next-move)
+        (swap! app-state assoc-in [:board (first next-move) (second next-move)] :cross))
+      (prn "Computer move: no more moves available"))))
+
 (defn cell-empty [x-cell y-cell]
   ^{:key (str x-cell y-cell)}
   [:rect {:width 0.9
@@ -33,7 +50,9 @@
           (fn rectangle-click [e]
             (println "Cell at COL" x-cell "ROW" y-cell "was clicked!")
             (println
-              (swap! app-state assoc-in [:board y-cell x-cell] :nought)))}])
+              (swap! app-state assoc-in [:board y-cell x-cell] :nought))
+            (computer-move))}])
+
 
 (defn cell-cross [x-cell y-cell]
   ^{:key (str x-cell y-cell)}
