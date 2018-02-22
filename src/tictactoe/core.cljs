@@ -3,8 +3,6 @@
 
 (enable-console-print!)
 
-(println "This text is printed from src/tictactoe/core.cljs. Go ahead and edit it and see reloading in action.")
-
 ;; define your app data so that it doesn't get over-written on reload
 (def board-dimension 3)
 
